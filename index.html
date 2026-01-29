@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FactoryOne - Master Edition v3.0</title>
+    <title>FactoryOne - Master Edition (Readable)</title>
+    
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏭</text></svg>">
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -19,39 +20,34 @@
     </script>
 
     <style>
-        /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
         .dark ::-webkit-scrollbar-thumb { background: #475569; }
         
-        /* Animations */
         .fade-in { animation: fadeIn 0.4s ease-in-out; }
         .scale-in { animation: scaleIn 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+        
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes scaleIn { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
         
-        /* Interactive Elements */
         .sort-header { cursor: pointer; user-select: none; transition: color 0.2s; }
         .sort-header:hover { color: #3b82f6; }
-        
-        /* PRINT STYLES (สำคัญมาก) */
+
+        /* Print Styles */
         @media print {
             body * { visibility: hidden; }
             #print-area, #print-area * { visibility: visible; }
             #print-area { position: absolute; left: 0; top: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: white; }
             @page { size: auto; margin: 0mm; }
         }
-
         .label-card {
             width: 350px; height: 220px;
-            border: 3px solid #000;
-            padding: 15px;
-            font-family: 'Inter', sans-serif;
-            display: flex; gap: 15px;
-            background: white; color: black;
-            box-sizing: border-box;
+            border: 3px solid #000; padding: 15px;
+            font-family: 'Inter', sans-serif; display: flex; gap: 15px;
+            background: white; color: black; box-sizing: border-box;
         }
+        .btn-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; transition: all 0.2s; font-size: 12px; }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-900 font-sans transition-colors duration-200 overflow-hidden selection:bg-blue-100 dark:selection:bg-blue-900">
@@ -63,7 +59,7 @@
                 <i class="fa-solid fa-industry text-4xl text-white"></i>
             </div>
             <h1 class="text-3xl font-extrabold text-slate-800 dark:text-white mb-2">FactoryOne</h1>
-            <p class="text-slate-500 dark:text-slate-400 mb-8">Master Edition v3.0</p>
+            <p class="text-slate-500 dark:text-slate-400 mb-8">Master Edition (Readable Code)</p>
             
             <form onsubmit="event.preventDefault(); handleLogin();" class="space-y-4 text-left">
                 <div>
@@ -90,7 +86,7 @@
                 </div>
                 <div>
                     <h1 class="font-bold text-lg tracking-wide">FactoryOne</h1>
-                    <p class="text-xs text-slate-400">v3.0 Master</p>
+                    <p class="text-xs text-slate-400">v3.0 Readable</p>
                 </div>
             </div>
             
@@ -136,12 +132,10 @@
                         <i class="fa-solid fa-moon dark:hidden"></i>
                         <i class="fa-solid fa-sun hidden dark:inline text-yellow-400"></i>
                     </button>
-                    <div class="relative group">
-                        <button class="p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-500 dark:text-slate-400 transition border border-transparent hover:border-slate-200 dark:hover:border-slate-600">
-                            <i class="fa-solid fa-bell text-lg"></i>
-                            <span class="absolute top-2 right-2.5 w-2 h-2 bg-red-500 rounded-full border-2 border-white dark:border-slate-800 animate-pulse"></span>
-                        </button>
-                    </div>
+                    <button class="p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-500 dark:text-slate-400 transition border border-transparent hover:border-slate-200 dark:hover:border-slate-600 relative">
+                        <i class="fa-solid fa-bell text-lg"></i>
+                        <span class="absolute top-2 right-2.5 w-2 h-2 bg-red-500 rounded-full border-2 border-white dark:border-slate-800 animate-pulse"></span>
+                    </button>
                 </div>
             </header>
 
@@ -241,6 +235,25 @@
         </div>
     </div>
 
+    <div id="modal-timeline" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[90] hidden flex items-center justify-center p-4 fade-in">
+        <div class="bg-white dark:bg-slate-800 rounded-2xl w-full max-w-lg shadow-2xl scale-in overflow-hidden h-[80vh] flex flex-col border border-slate-100 dark:border-slate-700">
+            <div class="p-5 border-b border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 flex justify-between items-center sticky top-0 z-10">
+                <div>
+                    <h3 class="text-lg font-bold text-slate-800 dark:text-white" id="timeline-title">Item History</h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400" id="timeline-sku">Tracking movements</p>
+                </div>
+                <button onclick="document.getElementById('modal-timeline').classList.add('hidden')" class="text-slate-400 hover:text-red-500 transition"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+            
+            <div class="flex-1 overflow-y-auto p-6 bg-white dark:bg-slate-800" id="timeline-content">
+                </div>
+            
+            <div class="p-4 border-t border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-center">
+                <span class="text-xs text-slate-400">End of History</span>
+            </div>
+        </div>
+    </div>
+
     <div id="toast" class="fixed top-6 right-6 z-[90] bg-white dark:bg-slate-800 border-l-4 border-green-500 pl-4 pr-6 py-4 rounded-lg shadow-2xl transform translate-x-[150%] transition-transform duration-500 flex items-center gap-4">
         <div class="bg-green-100 dark:bg-green-900/50 p-2 rounded-full text-green-600 dark:text-green-400"><i class="fa-solid fa-check"></i></div>
         <div>
@@ -253,7 +266,7 @@
 
     <script>
         // ==========================================
-        // 1. DATA & CONFIG
+        // 1. DATA & CONFIG (ตั้งค่าเริ่มต้น)
         // ==========================================
         const defaultInv = [
             { id: 1, name: 'Steel Plate A4', sku: 'STL-A4', stock: 45, min: 50, unit: 'pcs', loc: 'Zone A', cost: 150, img: '' },
@@ -269,12 +282,12 @@
         let filterStatus = 'all';
         let sortConfig = { key: 'id', direction: 'desc' };
 
-        // USB Scanner Buffer
+        // Buffer สำหรับเก็บค่าจากเครื่องสแกนบาร์โค้ด
         let scanBuffer = "";
         let scanTime = Date.now();
 
         // ==========================================
-        // 2. AUTH & INIT
+        // 2. AUTH & INIT (ล็อกอิน & เริ่มระบบ)
         // ==========================================
         function handleLogin() {
             const u = document.getElementById('login-user').value;
@@ -299,31 +312,39 @@
             renderNav();
             router('dashboard');
             
-            // Image Preview Listener
+            // Image Preview Listener (โชว์รูปเมื่อใส่ Link)
             document.getElementById('inp-img').addEventListener('input', function() {
                 const val = this.value;
                 const img = document.getElementById('preview-img');
                 const icon = document.getElementById('preview-icon');
-                if(val) { img.src = val; img.style.display='block'; img.classList.remove('hidden'); icon.style.display='none'; }
-                else { img.style.display='none'; icon.style.display='block'; }
+                if(val) { 
+                    img.src = val; img.style.display='block'; img.classList.remove('hidden'); icon.style.display='none'; 
+                } else { 
+                    img.style.display='none'; icon.style.display='block'; 
+                }
             });
 
-            // Scanner Listener
+            // Scanner Listener (ดักจับการยิงบาร์โค้ด)
             document.addEventListener("keydown", (e) => {
-                if (e.target.tagName === 'INPUT') return;
+                if (e.target.tagName === 'INPUT') return; // ถ้าพิมพ์ในช่อง Input ไม่ต้องทำอะไร
                 const char = e.key;
                 const now = Date.now();
+                
+                // ถ้ายิงห่างกันเกิน 50ms ถือว่าพิมพ์ใหม่
                 if (now - scanTime > 50) scanBuffer = "";
                 scanTime = now;
+                
                 if (char === "Enter") {
                     if (scanBuffer.length > 2) handleBarcodeScan(scanBuffer);
                     scanBuffer = "";
-                } else if (char.length === 1) scanBuffer += char;
+                } else if (char.length === 1) {
+                    scanBuffer += char;
+                }
             });
         }
 
         // ==========================================
-        // 3. ROUTING & UI
+        // 3. ROUTING & UI (จัดการเปลี่ยนหน้า)
         // ==========================================
         const routes = [
             { id: 'dashboard', label: 'Dashboard', icon: 'fa-chart-pie' },
@@ -344,7 +365,9 @@
 
         function router(id) {
             currRoute = id;
+            // รีเซ็ตปุ่มทั้งหมด
             document.querySelectorAll('nav button').forEach(b => b.className = "w-full flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 text-slate-400 hover:bg-slate-800 hover:text-white group");
+            // ไฮไลท์ปุ่มที่เลือก
             document.getElementById(`btn-${id}`).className = "w-full flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 bg-blue-600 text-white shadow-lg shadow-blue-900/50 group";
             
             document.getElementById('sidebar-overlay').classList.add('hidden');
@@ -354,6 +377,7 @@
             const container = document.getElementById('content-area');
             document.getElementById('page-title').innerText = routes.find(r=>r.id===id).label;
             
+            // โหลดหน้าเนื้อหา
             if(id === 'dashboard') renderDashboard(container);
             else if(id === 'inventory') renderInventory(container);
             else if(id === 'history') renderHistory(container);
@@ -361,7 +385,7 @@
         }
 
         // ==========================================
-        // 4. RENDERERS (PAGES)
+        // 4. RENDERERS (ส่วนแสดงผลหน้าต่างๆ)
         // ==========================================
         
         // --- DASHBOARD ---
@@ -374,7 +398,10 @@
                 <div class="flex items-start justify-between p-3 bg-slate-50 dark:bg-slate-700/30 rounded-lg">
                     <div class="flex items-center gap-3">
                         <div class="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 flex items-center justify-center text-xs"><i class="fa-solid fa-info"></i></div>
-                        <div><p class="text-sm font-bold text-slate-700 dark:text-slate-200">${log.action}</p><p class="text-xs text-slate-500">${log.desc}</p></div>
+                        <div>
+                            <p class="text-sm font-bold text-slate-700 dark:text-slate-200">${log.action}</p>
+                            <p class="text-xs text-slate-500">${log.desc}</p>
+                        </div>
                     </div>
                     <p class="text-xs font-mono text-slate-400">${log.time}</p>
                 </div>
@@ -400,7 +427,7 @@
             setTimeout(initCharts, 50);
         }
 
-        // --- INVENTORY ---
+        // --- INVENTORY (คลังสินค้า) ---
         function renderInventory(el) {
             el.innerHTML = `
                 <div class="space-y-6 fade-in">
@@ -452,7 +479,7 @@
             renderInvTable();
         }
 
-        // --- HISTORY ---
+        // --- HISTORY (ประวัติรวม) ---
         function renderHistory(el) {
             const today = new Date().toISOString().slice(0, 7);
             el.innerHTML = `
@@ -480,7 +507,7 @@
             renderHistoryTable();
         }
 
-        // --- PRODUCTION ---
+        // --- PRODUCTION (จำลอง) ---
         function renderProduction(el) {
              const m = (n,s,e,c) => `<div class="bg-white dark:bg-slate-800 border dark:border-slate-700 rounded-xl p-6 flex items-center gap-6 shadow-sm"><div class="w-16 h-16 rounded-full bg-${c}-100 flex items-center justify-center text-2xl text-${c}-600 ${s==='Running'?'animate-pulse':''}"><i class="fa-solid fa-gears"></i></div><div class="flex-1"> <div class="flex justify-between mb-2"><h3 class="font-bold text-lg dark:text-white">${n}</h3><span class="px-3 py-1 rounded-full text-xs font-bold uppercase bg-${c}-100 text-${c}-700">${s}</span></div><div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden"><div class="bg-${c}-500 h-2.5 rounded-full" style="width: ${e}%"></div></div><div class="flex justify-between mt-2 text-xs text-slate-500"><span>OEE: ${e}%</span></div></div></div>`;
              el.innerHTML = `<div class="space-y-6 fade-in"><h2 class="text-2xl font-bold dark:text-white mb-6">Production Monitor</h2><div class="grid gap-4">${m('CNC 01','Running',92,'green')}${m('Assembly Line','Running',88,'green')}${m('Packaging','Stopped',0,'red')}</div></div>`;
@@ -533,6 +560,11 @@
                             <button onclick="updateStock(${i.id}, 1)" class="btn-icon bg-green-100 text-green-600 hover:scale-110"><i class="fa-solid fa-plus"></i></button>
                             <button onclick="updateStock(${i.id}, -1)" class="btn-icon bg-red-100 text-red-600 hover:scale-110"><i class="fa-solid fa-minus"></i></button>
                             <span class="w-px h-8 bg-slate-200 mx-1"></span>
+                            
+                            <button onclick="openItemHistory(${i.id})" class="btn-icon bg-purple-100 text-purple-600 hover:scale-110" title="Timeline">
+                                <i class="fa-solid fa-clock-rotate-left"></i>
+                            </button>
+
                             <button onclick="printLabel(${i.id})" class="btn-icon bg-slate-800 text-white hover:scale-110"><i class="fa-solid fa-print"></i></button>
                             <button onclick="openModal(${i.id})" class="btn-icon bg-blue-100 text-blue-600 hover:scale-110"><i class="fa-solid fa-pen"></i></button>
                             <button onclick="delItem(${i.id})" class="btn-icon bg-slate-100 text-slate-500 hover:text-red-500"><i class="fa-solid fa-trash"></i></button>
@@ -686,6 +718,53 @@
                 }).join('') + `</tbody><tfoot><tr><td colspan="3" class="p-3 text-right font-bold">Total:</td><td class="p-3 text-right font-bold text-green-600 text-lg">${total.toLocaleString()}฿</td></tr></tfoot></table>`;
             }
             document.getElementById('modal-reorder').classList.remove('hidden');
+        }
+
+        // [NEW] ฟังก์ชันเปิดดูประวัติ Timeline (เขียนแบบเต็ม)
+        function openItemHistory(id) {
+            const item = inventory.find(i => i.id === id);
+            if(!item) return;
+
+            // 1. ตั้งหัวข้อ
+            document.getElementById('timeline-title').innerText = item.name;
+            document.getElementById('timeline-sku').innerText = `SKU: ${item.sku} | Bal: ${item.stock}`;
+
+            // 2. ดึงข้อมูล
+            const logs = transactionHistory.filter(t => t.sku === item.sku || t.name === item.name);
+            const container = document.getElementById('timeline-content');
+
+            if(logs.length === 0) {
+                container.innerHTML = `<p class="text-center text-slate-400 mt-10">No history found.</p>`;
+            } else {
+                // 3. สร้าง HTML Timeline
+                let html = `<div class="relative border-l-2 ml-3 space-y-6">`;
+                
+                html += logs.map(log => {
+                    let color = 'gray';
+                    if(log.type === 'IN') color = 'green';
+                    else if(log.type === 'OUT') color = 'orange';
+                    else if(log.type === 'NEW') color = 'blue';
+                    else if(log.type === 'DELETE') color = 'red';
+
+                    return `
+                        <div class="relative pl-6">
+                            <span class="absolute -left-[7px] top-1 h-3 w-3 rounded-full bg-${color}-500"></span>
+                            <div>
+                                <span class="text-xs font-bold px-2 rounded bg-${color}-100 text-${color}-600">${log.type}</span>
+                                <p class="font-bold dark:text-white">
+                                    ${log.qty > 0 ? '+' : ''}${log.qty} 
+                                    <span class="text-xs font-normal text-slate-400">by ${log.user || 'Unknown'}</span>
+                                </p>
+                                <p class="text-xs text-slate-400">${new Date(log.date).toLocaleString()}</p>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+                
+                html += `</div>`;
+                container.innerHTML = html;
+            }
+            document.getElementById('modal-timeline').classList.remove('hidden');
         }
 
         function printLabel(id) {

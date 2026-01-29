@@ -3,17 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FactoryOne - Ultimate (Thai Commented)</title>
-    
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📦</text></svg>">
+    <title>FactoryOne - Master Edition v3.0</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏭</text></svg>">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
     <script>
-        // ตั้งค่า Tailwind ให้รองรับ Dark Mode และใช้ฟอนต์ Inter
         tailwind.config = {
             darkMode: 'class',
             theme: { extend: { fontFamily: { sans: ['Inter', 'sans-serif'] } } }
@@ -21,54 +19,70 @@
     </script>
 
     <style>
-        /* ปรับแต่ง Scrollbar ให้ดูสวยงาม ไม่ใช่แท่งสี่เหลี่ยมทื่อๆ */
+        /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
         .dark ::-webkit-scrollbar-thumb { background: #475569; }
         
-        /* Animation: Effect ตอนโหลดหน้า (Fade In / Scale In) */
+        /* Animations */
         .fade-in { animation: fadeIn 0.4s ease-in-out; }
         .scale-in { animation: scaleIn 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
-        
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes scaleIn { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
         
-        /* CSS สำหรับหัวตารางที่กดเรียงลำดับได้ (Sortable) */
+        /* Interactive Elements */
         .sort-header { cursor: pointer; user-select: none; transition: color 0.2s; }
         .sort-header:hover { color: #3b82f6; }
+        
+        /* PRINT STYLES (สำคัญมาก) */
+        @media print {
+            body * { visibility: hidden; }
+            #print-area, #print-area * { visibility: visible; }
+            #print-area { position: absolute; left: 0; top: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: white; }
+            @page { size: auto; margin: 0mm; }
+        }
+
+        .label-card {
+            width: 350px; height: 220px;
+            border: 3px solid #000;
+            padding: 15px;
+            font-family: 'Inter', sans-serif;
+            display: flex; gap: 15px;
+            background: white; color: black;
+            box-sizing: border-box;
+        }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-900 font-sans transition-colors duration-200 overflow-hidden selection:bg-blue-100 dark:selection:bg-blue-900">
 
     <div id="login-screen" class="fixed inset-0 z-[100] bg-slate-900 flex items-center justify-center transition-opacity duration-500">
         <div class="bg-white dark:bg-slate-800 p-8 rounded-3xl shadow-2xl w-full max-w-md border border-slate-700/50 text-center relative overflow-hidden">
-            <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-500 to-purple-600"></div>
+            <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-600 to-purple-600"></div>
             <div class="w-20 h-20 bg-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-blue-500/50">
-                <i class="fa-solid fa-cube text-4xl text-white"></i>
+                <i class="fa-solid fa-industry text-4xl text-white"></i>
             </div>
-            <h1 class="text-3xl font-bold text-slate-800 dark:text-white mb-2">FactoryOne</h1>
-            <p class="text-slate-500 dark:text-slate-400 mb-8">Ultimate Management v2.0</p>
+            <h1 class="text-3xl font-extrabold text-slate-800 dark:text-white mb-2">FactoryOne</h1>
+            <p class="text-slate-500 dark:text-slate-400 mb-8">Master Edition v3.0</p>
             
             <form onsubmit="event.preventDefault(); handleLogin();" class="space-y-4 text-left">
                 <div>
                     <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Username</label>
-                    <input type="text" id="login-user" class="w-full px-4 py-3 rounded-xl border dark:border-slate-600 bg-slate-50 dark:bg-slate-700/50 dark:text-white outline-none focus:ring-2 focus:ring-blue-500 transition" placeholder="admin" value="admin">
+                    <input type="text" id="login-user" class="w-full px-4 py-3 rounded-xl border dark:border-slate-600 bg-slate-50 dark:bg-slate-700/50 dark:text-white outline-none focus:ring-2 focus:ring-blue-500 transition" placeholder="Enter your name" required>
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Password</label>
                     <input type="password" id="login-pass" class="w-full px-4 py-3 rounded-xl border dark:border-slate-600 bg-slate-50 dark:bg-slate-700/50 dark:text-white outline-none focus:ring-2 focus:ring-blue-500 transition" placeholder="••••" value="1234">
                 </div>
                 <button type="submit" class="w-full py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-lg shadow-blue-500/30 transition transform active:scale-95 mt-4">
-                    Login System
+                    Access System
                 </button>
             </form>
-            <p class="mt-6 text-xs text-slate-400">Default: admin / 1234</p>
+            <p class="mt-6 text-xs text-slate-400">Default Pass: 1234</p>
         </div>
     </div>
 
     <div id="app-root" class="flex h-screen">
-        
         <aside id="sidebar" class="bg-slate-900 text-white w-72 flex-shrink-0 flex flex-col transition-all duration-300 fixed md:static inset-y-0 left-0 z-50 transform -translate-x-full md:translate-x-0 shadow-2xl">
             <div class="h-20 flex items-center gap-3 px-6 border-b border-slate-800 bg-slate-900">
                 <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-blue-500 flex items-center justify-center shadow-lg shadow-blue-900/50">
@@ -76,13 +90,22 @@
                 </div>
                 <div>
                     <h1 class="font-bold text-lg tracking-wide">FactoryOne</h1>
-                    <p class="text-xs text-slate-400">v2.0 Ultimate</p>
+                    <p class="text-xs text-slate-400">v3.0 Master</p>
                 </div>
             </div>
             
             <nav class="flex-1 p-4 space-y-2 overflow-y-auto" id="nav-container"></nav>
             
-            <div class="px-4 pb-2">
+            <div class="px-4 pb-2 space-y-2">
+                <button onclick="backupSystem()" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 text-green-400 hover:bg-green-500/10 hover:text-green-300 group border border-dashed border-green-500/30">
+                    <i class="fa-solid fa-download w-5 text-center"></i> 
+                    <span class="font-medium text-sm">Backup Data</span>
+                </button>
+                <label class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 text-blue-400 hover:bg-blue-500/10 hover:text-blue-300 group border border-dashed border-blue-400/30 cursor-pointer">
+                    <i class="fa-solid fa-upload w-5 text-center"></i> 
+                    <span class="font-medium text-sm">Restore Data</span>
+                    <input type="file" id="restore-file" accept=".json" class="hidden" onchange="restoreSystem(this)">
+                </label>
                 <button onclick="factoryReset()" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 text-red-400 hover:bg-red-500/10 hover:text-red-300 group">
                     <i class="fa-solid fa-power-off w-5 text-center group-hover:rotate-90 transition-transform"></i> 
                     <span class="font-medium text-sm">Reset System</span>
@@ -90,11 +113,11 @@
             </div>
             
             <div class="p-4 border-t border-slate-800 bg-slate-900">
-                <div class="flex items-center gap-3 p-3 bg-slate-800/50 rounded-xl cursor-pointer hover:bg-slate-800 transition border border-slate-700/50">
-                    <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-blue-500 to-purple-500 flex items-center justify-center font-bold text-sm shadow-md">AD</div>
-                    <div>
-                        <p class="text-sm font-semibold">Admin User</p>
-                        <p class="text-xs text-slate-400">System Manager</p>
+                <div class="flex items-center gap-3 p-3 bg-slate-800/50 rounded-xl border border-slate-700/50">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center font-bold text-sm shadow-md" id="user-avatar">US</div>
+                    <div class="overflow-hidden">
+                        <p class="text-sm font-semibold truncate" id="user-name-display">Guest</p>
+                        <p class="text-xs text-green-400 flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span> Online</p>
                     </div>
                 </div>
             </div>
@@ -103,68 +126,65 @@
         <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/50 z-40 hidden md:hidden backdrop-blur-sm transition-opacity"></div>
 
         <main class="flex-1 flex flex-col h-screen overflow-hidden relative w-full bg-slate-50 dark:bg-slate-900 transition-colors duration-200">
-            <header class="h-20 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between px-6 lg:px-8 z-30 transition-colors shadow-sm">
+            <header class="h-20 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between px-6 lg:px-8 z-30 shadow-sm">
                 <div class="flex items-center gap-4">
                     <button onclick="toggleSidebar()" class="md:hidden p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition"><i class="fa-solid fa-bars text-xl"></i></button>
-                    <h2 id="page-title" class="text-2xl font-bold text-slate-800 dark:text-white transition-colors tracking-tight">Dashboard</h2>
+                    <h2 id="page-title" class="text-2xl font-bold text-slate-800 dark:text-white tracking-tight">Dashboard</h2>
                 </div>
                 <div class="flex items-center gap-3">
                     <button onclick="toggleDarkMode()" class="p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-500 dark:text-slate-400 transition border border-transparent hover:border-slate-200 dark:hover:border-slate-600">
                         <i class="fa-solid fa-moon dark:hidden"></i>
                         <i class="fa-solid fa-sun hidden dark:inline text-yellow-400"></i>
                     </button>
-                    <button onclick="toggleNotif()" class="relative p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-500 dark:text-slate-400 transition border border-transparent hover:border-slate-200 dark:hover:border-slate-600">
-                        <i class="fa-solid fa-bell text-lg"></i>
-                        <span class="absolute top-2 right-2.5 w-2 h-2 bg-red-500 rounded-full border-2 border-white dark:border-slate-800 animate-pulse"></span>
-                    </button>
-                </div>
-            </header>
-
-            <div id="notif-dropdown" class="hidden absolute top-20 right-6 w-80 bg-white dark:bg-slate-800 rounded-2xl shadow-2xl border border-slate-100 dark:border-slate-700 z-50 overflow-hidden scale-in origin-top-right">
-                <div class="p-4 border-b border-slate-100 dark:border-slate-700 font-bold dark:text-white flex justify-between items-center">
-                    <span>Notifications</span>
-                    <span class="text-xs font-normal text-blue-500 cursor-pointer">Mark all read</span>
-                </div>
-                <div class="max-h-80 overflow-y-auto">
-                    <div class="p-4 border-b border-slate-50 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition cursor-pointer group">
-                        <div class="flex gap-3">
-                            <div class="text-orange-500 bg-orange-100 dark:bg-orange-900/30 w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-triangle-exclamation text-xs"></i></div>
-                            <div>
-                                <p class="text-sm font-medium text-slate-800 dark:text-slate-200 group-hover:text-blue-600 transition-colors">System Update v2.0</p>
-                                <p class="text-xs text-slate-500 mt-1">Just now</p>
-                            </div>
-                        </div>
+                    <div class="relative group">
+                        <button class="p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-500 dark:text-slate-400 transition border border-transparent hover:border-slate-200 dark:hover:border-slate-600">
+                            <i class="fa-solid fa-bell text-lg"></i>
+                            <span class="absolute top-2 right-2.5 w-2 h-2 bg-red-500 rounded-full border-2 border-white dark:border-slate-800 animate-pulse"></span>
+                        </button>
                     </div>
                 </div>
-            </div>
+            </header>
 
             <div id="content-area" class="flex-1 overflow-y-auto p-4 lg:p-8 relative scroll-smooth"></div>
         </main>
     </div>
 
     <div id="modal-form" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[60] hidden flex items-center justify-center p-4 fade-in">
-        <div class="bg-white dark:bg-slate-800 rounded-2xl w-full max-w-lg shadow-2xl scale-in overflow-hidden transition-colors border border-slate-100 dark:border-slate-700">
-            <div class="p-6 border-b border-slate-100 dark:border-slate-700 flex justify-between items-center bg-slate-50/50 dark:bg-slate-800">
-                <h3 id="modal-title" class="text-xl font-bold text-slate-800 dark:text-white">Add New Item</h3>
+        <div class="bg-white dark:bg-slate-800 rounded-2xl w-full max-w-lg shadow-2xl scale-in overflow-hidden border border-slate-100 dark:border-slate-700 max-h-[90vh] overflow-y-auto">
+            <div class="p-6 border-b border-slate-100 dark:border-slate-700 flex justify-between items-center bg-slate-50/50 dark:bg-slate-800 sticky top-0 z-10">
+                <h3 id="modal-title" class="text-xl font-bold text-slate-800 dark:text-white">Item Details</h3>
                 <button onclick="closeModal()" class="text-slate-400 hover:text-red-500 transition-colors"><i class="fa-solid fa-xmark text-xl"></i></button>
             </div>
             <form onsubmit="event.preventDefault(); handleFormSubmit();" class="p-6 space-y-5">
                 <input type="hidden" id="inp-id">
                 
                 <div>
+                    <label class="block text-sm font-medium text-slate-500 dark:text-slate-400 mb-1.5">Image URL (Optional)</label>
+                    <div class="flex gap-2">
+                        <input type="text" id="inp-img" class="flex-1 px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none transition-all" placeholder="https://...">
+                        <div class="w-12 h-12 rounded-lg bg-slate-100 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 overflow-hidden flex items-center justify-center relative">
+                             <img id="preview-img" src="" onerror="this.style.display='none'" class="w-full h-full object-cover hidden absolute inset-0">
+                             <i id="preview-icon" class="fa-solid fa-image text-slate-400"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
                     <label class="block text-sm font-medium text-slate-500 dark:text-slate-400 mb-1.5">Item Name</label>
                     <input type="text" id="inp-name" required class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none transition-all" placeholder="e.g. Steel Plate">
                 </div>
+                
                 <div class="grid grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-sm font-medium text-slate-500 dark:text-slate-400 mb-1.5">SKU</label>
-                        <input type="text" id="inp-sku" required class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none transition-all" placeholder="XYZ-001">
+                        <label class="block text-sm font-medium text-slate-500 dark:text-slate-400 mb-1.5">SKU (Barcode)</label>
+                        <input type="text" id="inp-sku" required class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none transition-all font-mono" placeholder="SCAN or TYPE">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-slate-500 dark:text-slate-400 mb-1.5">Location</label>
                         <input type="text" id="inp-loc" required class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none transition-all" placeholder="Zone A">
                     </div>
                 </div>
+
                 <div class="grid grid-cols-3 gap-4">
                     <div>
                         <label class="block text-sm font-medium text-slate-500 dark:text-slate-400 mb-1.5">Stock</label>
@@ -182,10 +202,16 @@
                             <option value="L">Liter</option>
                             <option value="box">Box</option>
                             <option value="roll">Roll</option>
-                            <option value="pair">Pair</option>
+                            <option value="set">Set</option>
                         </select>
                     </div>
                 </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-slate-500 dark:text-slate-400 mb-1.5">Unit Cost (฿)</label>
+                    <input type="number" id="inp-cost" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none transition-all" placeholder="0.00" step="0.01">
+                </div>
+
                 <div class="pt-4 flex gap-3">
                     <button type="button" onclick="closeModal()" class="flex-1 py-3 rounded-xl border border-slate-200 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition font-medium">Cancel</button>
                     <button type="submit" class="flex-1 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 font-medium shadow-lg shadow-blue-500/30 transition transform active:scale-95">Save Item</button>
@@ -194,7 +220,28 @@
         </div>
     </div>
 
-    <div id="toast" class="fixed top-6 right-6 z-[70] bg-white dark:bg-slate-800 border-l-4 border-green-500 pl-4 pr-6 py-4 rounded-lg shadow-2xl transform translate-x-[150%] transition-transform duration-500 flex items-center gap-4">
+    <div id="modal-reorder" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[80] hidden flex items-center justify-center p-4 fade-in">
+        <div class="bg-white rounded-2xl w-full max-w-3xl shadow-2xl scale-in overflow-hidden h-[80vh] flex flex-col">
+            <div class="p-6 border-b flex justify-between items-center bg-slate-50">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center text-orange-600"><i class="fa-solid fa-clipboard-list"></i></div>
+                    <div>
+                        <h3 class="text-xl font-bold text-slate-800">Purchase Request</h3>
+                        <p class="text-sm text-slate-500">Auto-generated based on Min Level</p>
+                    </div>
+                </div>
+                <button onclick="document.getElementById('modal-reorder').classList.add('hidden')" class="text-slate-400 hover:text-red-500"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+            <div class="flex-1 overflow-y-auto p-8" id="reorder-content"></div>
+            <div class="p-6 border-t bg-slate-50 flex justify-end gap-3">
+                 <button onclick="printReorder()" class="px-6 py-3 bg-slate-900 text-white rounded-xl hover:bg-black transition flex items-center gap-2 shadow-lg">
+                    <i class="fa-solid fa-print"></i> Print PO
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="fixed top-6 right-6 z-[90] bg-white dark:bg-slate-800 border-l-4 border-green-500 pl-4 pr-6 py-4 rounded-lg shadow-2xl transform translate-x-[150%] transition-transform duration-500 flex items-center gap-4">
         <div class="bg-green-100 dark:bg-green-900/50 p-2 rounded-full text-green-600 dark:text-green-400"><i class="fa-solid fa-check"></i></div>
         <div>
             <h4 class="font-bold text-slate-800 dark:text-white text-sm" id="toast-title">Success</h4>
@@ -202,92 +249,90 @@
         </div>
     </div>
 
+    <div id="print-area" class="hidden"></div>
+
     <script>
         // ==========================================
-        // SECTION 1: จัดการข้อมูล (Data Store)
+        // 1. DATA & CONFIG
         // ==========================================
-        
-        // ข้อมูลตัวอย่างเริ่มต้น (กรณีเปิดเว็บครั้งแรกยังไม่มีข้อมูล)
         const defaultInv = [
-            { id: 1, name: 'Steel Plate A4', sku: 'STL-A4', stock: 45, min: 50, unit: 'pcs', loc: 'Zone A' },
-            { id: 2, name: 'Hydraulic Oil', sku: 'OIL-15W', stock: 120, min: 30, unit: 'L', loc: 'Zone B' },
-            { id: 3, name: 'Copper Wire', sku: 'CPR-02', stock: 5, min: 20, unit: 'roll', loc: 'Zone A' },
-            { id: 4, name: 'Circuit Board', sku: 'PCB-X1', stock: 200, min: 100, unit: 'pcs', loc: 'Zone C' },
-            { id: 5, name: 'Safety Gloves', sku: 'SAF-G', stock: 12, min: 20, unit: 'pair', loc: 'Zone S' }
+            { id: 1, name: 'Steel Plate A4', sku: 'STL-A4', stock: 45, min: 50, unit: 'pcs', loc: 'Zone A', cost: 150, img: '' },
+            { id: 2, name: 'Hydraulic Oil', sku: 'OIL-15W', stock: 120, min: 30, unit: 'L', loc: 'Zone B', cost: 80, img: '' },
         ];
         
-        // โหลดข้อมูลจาก LocalStorage (ถ้าไม่มีให้ใช้ defaultInv)
-        let inventory = JSON.parse(localStorage.getItem('factory_inv_v2')) || defaultInv;
-        // โหลดประวัติการทำงาน (Logs)
-        let activityLogs = JSON.parse(localStorage.getItem('factory_logs_v2')) || [];
-        // โหลดค่า Dark Mode
+        let inventory = JSON.parse(localStorage.getItem('factory_inv_v3')) || defaultInv;
+        let activityLogs = JSON.parse(localStorage.getItem('factory_logs_v3')) || [];
+        let transactionHistory = JSON.parse(localStorage.getItem('factory_trans_v3')) || [];
+        
         let isDarkMode = localStorage.getItem('darkMode') === 'true';
+        let currentUser = 'Guest';
+        let filterStatus = 'all';
+        let sortConfig = { key: 'id', direction: 'desc' };
 
-        // ตัวแปรสำหรับเก็บสถานะการกรอง (Filter) และการเรียงลำดับ (Sort)
-        let filterStatus = 'all'; // ค่าที่เป็นไปได้: all, normal, low, out
-        let sortConfig = { key: 'id', direction: 'desc' }; // เรียงตาม ID, มากไปน้อย
+        // USB Scanner Buffer
+        let scanBuffer = "";
+        let scanTime = Date.now();
 
         // ==========================================
-        // SECTION 2: ระบบล็อกอิน (Authentication)
+        // 2. AUTH & INIT
         // ==========================================
         function handleLogin() {
             const u = document.getElementById('login-user').value;
             const p = document.getElementById('login-pass').value;
-            const screen = document.getElementById('login-screen');
             
-            // ตรวจสอบรหัสผ่านแบบง่าย (Mockup)
-            if(u === 'admin' && p === '1234') {
-                // อนิเมชั่นซ่อนหน้า Login
+            if(p === '1234') {
+                currentUser = u || 'Admin';
+                document.getElementById('user-name-display').innerText = currentUser;
+                document.getElementById('user-avatar').innerText = currentUser.substring(0,2).toUpperCase();
+                
+                const screen = document.getElementById('login-screen');
                 screen.classList.add('opacity-0', 'pointer-events-none');
-                setTimeout(() => screen.remove(), 500); // ลบ Element ทิ้งเพื่อประหยัด RAM
-                init(); // เริ่มโหลดระบบหลัก
+                setTimeout(() => screen.remove(), 500);
+                init();
             } else {
-                alert('❌ Incorrect Password! (Try: admin / 1234)');
+                alert('❌ Incorrect Password! (Default: 1234)');
             }
         }
 
-        // ==========================================
-        // SECTION 3: เริ่มต้นระบบ (Initialization)
-        // ==========================================
         function init() {
-            // ตั้งค่า Dark Mode ตามที่บันทึกไว้
             if(isDarkMode) document.documentElement.classList.add('dark');
-            // สร้างปุ่มเมนู Sidebar
             renderNav();
-            // เปิดหน้าแรกเป็น Dashboard
             router('dashboard');
-        }
+            
+            // Image Preview Listener
+            document.getElementById('inp-img').addEventListener('input', function() {
+                const val = this.value;
+                const img = document.getElementById('preview-img');
+                const icon = document.getElementById('preview-icon');
+                if(val) { img.src = val; img.style.display='block'; img.classList.remove('hidden'); icon.style.display='none'; }
+                else { img.style.display='none'; icon.style.display='block'; }
+            });
 
-        // ฟังก์ชันล้างข้อมูลทั้งหมด (เหมือนคืนค่าโรงงาน)
-        function factoryReset() {
-            if(confirm('⚠️ WARNING: This will delete ALL data. Continue?')) {
-                localStorage.removeItem('factory_inv_v2');
-                localStorage.removeItem('factory_logs_v2');
-                location.reload(); // รีเฟรชหน้าเว็บ
-            }
-        }
-
-        // ฟังก์ชันสลับ Dark/Light Mode
-        function toggleDarkMode() {
-            isDarkMode = !isDarkMode;
-            document.documentElement.classList.toggle('dark');
-            localStorage.setItem('darkMode', isDarkMode);
-            // ถ้ารันหน้า Dashboard อยู่ ให้วาดกราฟใหม่ (เพื่อให้สีตัวหนังสือเปลี่ยนตาม)
-            if(currRoute === 'dashboard') router('dashboard'); 
+            // Scanner Listener
+            document.addEventListener("keydown", (e) => {
+                if (e.target.tagName === 'INPUT') return;
+                const char = e.key;
+                const now = Date.now();
+                if (now - scanTime > 50) scanBuffer = "";
+                scanTime = now;
+                if (char === "Enter") {
+                    if (scanBuffer.length > 2) handleBarcodeScan(scanBuffer);
+                    scanBuffer = "";
+                } else if (char.length === 1) scanBuffer += char;
+            });
         }
 
         // ==========================================
-        // SECTION 4: ระบบเปลี่ยนหน้า (Routing)
+        // 3. ROUTING & UI
         // ==========================================
         const routes = [
             { id: 'dashboard', label: 'Dashboard', icon: 'fa-chart-pie' },
             { id: 'inventory', label: 'Inventory', icon: 'fa-boxes-stacked' },
+            { id: 'history', label: 'History', icon: 'fa-clock-rotate-left' },
             { id: 'production', label: 'Production', icon: 'fa-industry' },
-            { id: 'barcode', label: 'Scanner', icon: 'fa-barcode' },
         ];
         let currRoute = 'dashboard';
 
-        // สร้าง HTML เมนูจาก Array ด้านบน
         function renderNav() {
             document.getElementById('nav-container').innerHTML = routes.map(r => `
                 <button onclick="router('${r.id}')" id="btn-${r.id}" class="w-full flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 text-slate-400 hover:bg-slate-800 hover:text-white group">
@@ -297,131 +342,106 @@
             `).join('');
         }
 
-        // ฟังก์ชันเปลี่ยนหน้า (โดยไม่รีโหลดเว็บ)
         function router(id) {
             currRoute = id;
-            // รีเซ็ตปุ่มเมนูให้เป็นสีปกติ
             document.querySelectorAll('nav button').forEach(b => b.className = "w-full flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 text-slate-400 hover:bg-slate-800 hover:text-white group");
-            // ไฮไลท์ปุ่มเมนูที่เลือก (สีฟ้า)
             document.getElementById(`btn-${id}`).className = "w-full flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 bg-blue-600 text-white shadow-lg shadow-blue-900/50 group";
             
-            // ปิด Sidebar (กรณีใช้มือถือ)
             document.getElementById('sidebar-overlay').classList.add('hidden');
             document.getElementById('sidebar').classList.add('-translate-x-full');
             document.getElementById('sidebar').classList.remove('translate-x-0');
 
             const container = document.getElementById('content-area');
-            const title = document.getElementById('page-title');
+            document.getElementById('page-title').innerText = routes.find(r=>r.id===id).label;
             
-            // Logic เลือกฟังก์ชันที่จะรันตามหน้า
-            if(id === 'dashboard') { title.innerText = 'Dashboard Overview'; renderDashboard(container); }
-            else if(id === 'inventory') { title.innerText = 'Inventory Management'; renderInventory(container); }
-            else if(id === 'production') { title.innerText = 'Production Monitor'; renderProduction(container); }
-            else if(id === 'barcode') { title.innerText = 'Scanner Terminal'; renderBarcode(container); }
+            if(id === 'dashboard') renderDashboard(container);
+            else if(id === 'inventory') renderInventory(container);
+            else if(id === 'history') renderHistory(container);
+            else if(id === 'production') renderProduction(container);
         }
 
         // ==========================================
-        // SECTION 5: ส่วนแสดงผล (Renderers)
+        // 4. RENDERERS (PAGES)
         // ==========================================
-
-        // === หน้า DASHBOARD ===
+        
+        // --- DASHBOARD ---
         function renderDashboard(el) {
             const lowStock = inventory.filter(i => i.stock < i.min).length;
+            const totalVal = inventory.reduce((sum, i) => sum + (i.stock * (i.cost||0)), 0);
+            const valStr = new Intl.NumberFormat('th-TH', { style: 'currency', currency: 'THB', minimumFractionDigits:0 }).format(totalVal);
             
-            // สร้างรายการประวัติ (Logs) 5 รายการล่าสุด
             const logRows = activityLogs.slice(0, 5).map(log => `
-                <div class="flex items-start justify-between p-3 bg-slate-50 dark:bg-slate-700/30 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition">
+                <div class="flex items-start justify-between p-3 bg-slate-50 dark:bg-slate-700/30 rounded-lg">
                     <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 flex items-center justify-center text-xs"><i class="fa-solid fa-clock-rotate-left"></i></div>
-                        <div>
-                            <p class="text-sm font-bold text-slate-700 dark:text-slate-200">${log.action}</p>
-                            <p class="text-xs text-slate-500 dark:text-slate-400">${log.desc}</p>
-                        </div>
+                        <div class="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 flex items-center justify-center text-xs"><i class="fa-solid fa-info"></i></div>
+                        <div><p class="text-sm font-bold text-slate-700 dark:text-slate-200">${log.action}</p><p class="text-xs text-slate-500">${log.desc}</p></div>
                     </div>
                     <p class="text-xs font-mono text-slate-400">${log.time}</p>
                 </div>
             `).join('');
 
-            // HTML โครงสร้าง Dashboard
             el.innerHTML = `
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 fade-in">
-                    ${statCard('Total Inventory', inventory.length, 'Items', 'fa-box', 'blue')}
-                    ${statCard('Efficiency', '92%', 'OEE', 'fa-chart-line', 'green')}
-                    ${statCard('Low Stock Alerts', lowStock, 'Items', 'fa-triangle-exclamation', 'orange')}
-                    ${statCard('Active Machines', '3/4', 'Running', 'fa-gears', 'purple')}
+                    ${statCard('Total Items', inventory.length, 'SKUs', 'fa-box', 'blue')}
+                    ${statCard('Inventory Value', valStr, 'Total Asset', 'fa-sack-dollar', 'green')}
+                    ${statCard('Low Stock', lowStock, 'Alerts', 'fa-triangle-exclamation', 'orange')}
+                    ${statCard('User Online', currentUser, 'Active', 'fa-user-clock', 'purple')}
                 </div>
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 fade-in">
                     <div class="lg:col-span-2 bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700">
-                        <h3 class="font-bold text-lg text-slate-700 dark:text-white mb-6">Production Output</h3>
-                        <div class="h-72"><canvas id="chartProd"></canvas></div>
+                         <h3 class="font-bold text-lg text-slate-700 dark:text-white mb-6">Stock Distribution</h3>
+                         <div class="h-64"><canvas id="chartInv"></canvas></div>
                     </div>
                     <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700">
-                        <h3 class="font-bold text-lg text-slate-700 dark:text-white mb-6">Stock Status</h3>
-                        <div class="h-56 flex justify-center"><canvas id="chartInv"></canvas></div>
-                    </div>
-                    <div class="lg:col-span-3 bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700">
-                        <div class="flex justify-between items-center mb-4">
-                            <h3 class="font-bold text-lg text-slate-700 dark:text-white">Recent Activity</h3>
-                            <button onclick="clearLogs()" class="text-xs text-red-400 hover:text-red-500">Clear History</button>
-                        </div>
-                        <div class="space-y-3">${activityLogs.length ? logRows : '<p class="text-slate-400 text-sm text-center">No recent activity</p>'}</div>
+                        <div class="flex justify-between items-center mb-4"><h3 class="font-bold text-lg text-slate-700 dark:text-white">Recent Logs</h3></div>
+                        <div class="space-y-3">${logRows || '<p class="text-center text-slate-400">No activity</p>'}</div>
                     </div>
                 </div>`;
-            
-            // รอ 50ms ให้ HTML สร้างเสร็จก่อนค่อยวาดกราฟ
-            setTimeout(() => initCharts(lowStock), 50);
+            setTimeout(initCharts, 50);
         }
 
-        // Helper สร้างการ์ดตัวเลขสถิติ (ลดโค้ดซ้ำ)
-        function statCard(label, val, unit, icon, color) {
-            const c = { blue: 'from-blue-500 to-blue-600', green: 'from-green-500 to-green-600', orange: 'from-orange-500 to-orange-600', purple: 'from-purple-500 to-purple-600' };
-            return `<div class="bg-gradient-to-br ${c[color]} text-white p-6 rounded-2xl shadow-lg relative overflow-hidden group hover:-translate-y-1 transition-transform">
-                <div class="relative z-10"><p class="opacity-80 font-medium text-sm">${label}</p><h3 class="text-3xl font-bold mt-1">${val} <span class="text-sm font-normal opacity-70">${unit}</span></h3></div>
-                <i class="fa-solid ${icon} absolute -bottom-4 -right-4 text-8xl opacity-10 group-hover:scale-110 group-hover:rotate-12 transition-transform"></i>
-            </div>`;
-        }
-
-        // === หน้า INVENTORY (หน้าคลังสินค้า - ส่วนสำคัญ) ===
+        // --- INVENTORY ---
         function renderInventory(el) {
             el.innerHTML = `
                 <div class="space-y-6 fade-in">
                     <div class="flex flex-col xl:flex-row justify-between gap-4">
                         <div class="flex flex-col sm:flex-row gap-4 w-full xl:w-auto">
                             <div class="relative flex-1 sm:w-80 group">
-                                <i class="fa-solid fa-search absolute left-4 top-3.5 text-slate-400 group-focus-within:text-blue-500 transition-colors"></i>
-                                <input type="text" id="search" onkeyup="renderInvTable()" placeholder="Search Name or SKU..." class="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none transition-shadow shadow-sm">
+                                <i class="fa-solid fa-search absolute left-4 top-3.5 text-slate-400"></i>
+                                <input type="text" id="search" onkeyup="renderInvTable()" placeholder="Search Name or SKU..." class="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none shadow-sm">
                             </div>
-                            <div class="relative w-full sm:w-48">
-                                <i class="fa-solid fa-filter absolute left-4 top-3.5 text-slate-400"></i>
-                                <select id="filter-status" onchange="handleFilterChange(this.value)" class="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none appearance-none cursor-pointer">
-                                    <option value="all">All Status</option>
-                                    <option value="normal">✅ Normal</option>
-                                    <option value="low">⚠️ Low Stock</option>
-                                    <option value="out">❌ Out of Stock</option>
-                                </select>
-                                <i class="fa-solid fa-chevron-down absolute right-4 top-4 text-slate-400 text-xs pointer-events-none"></i>
-                            </div>
+                            <select id="filter-status" onchange="filterStatus=this.value;renderInvTable()" class="w-full sm:w-48 px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none cursor-pointer">
+                                <option value="all">All Status</option>
+                                <option value="normal">✅ Normal</option>
+                                <option value="low">⚠️ Low Stock</option>
+                                <option value="out">❌ Out of Stock</option>
+                            </select>
                         </div>
-                        <div class="flex gap-3 w-full xl:w-auto">
-                            <button onclick="exportCSV()" class="px-5 py-3 border border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700 transition flex items-center gap-2 font-medium">
-                                <i class="fa-solid fa-file-csv"></i> <span class="hidden sm:inline">Export</span>
+                        <div class="flex gap-3 w-full xl:w-auto overflow-x-auto pb-2 xl:pb-0">
+                            <button onclick="openReorderModal()" class="px-5 py-3 border border-orange-200 text-orange-600 bg-orange-50 rounded-xl hover:bg-orange-100 transition flex items-center gap-2 font-medium whitespace-nowrap">
+                                <i class="fa-solid fa-clipboard-list"></i> Reorder
                             </button>
-                            <button onclick="openModal()" class="flex-1 sm:flex-none px-5 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 shadow-lg shadow-blue-500/30 transition flex items-center justify-center gap-2 font-medium">
+                            <button onclick="exportCSV()" class="px-5 py-3 border border-slate-200 text-slate-600 rounded-xl hover:bg-slate-50 transition flex items-center gap-2 font-medium whitespace-nowrap">
+                                <i class="fa-solid fa-file-csv"></i> Export
+                            </button>
+                            <label class="px-5 py-3 border border-slate-200 text-slate-600 rounded-xl hover:bg-slate-50 transition flex items-center gap-2 font-medium cursor-pointer whitespace-nowrap">
+                                <i class="fa-solid fa-file-import"></i> Import
+                                <input type="file" accept=".csv" class="hidden" onchange="importCSV(this)">
+                            </label>
+                            <button onclick="openModal()" class="flex-1 sm:flex-none px-5 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 shadow-lg shadow-blue-500/30 transition flex items-center justify-center gap-2 font-medium whitespace-nowrap">
                                 <i class="fa-solid fa-plus"></i> Add Item
                             </button>
                         </div>
                     </div>
-
                     <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
                         <div class="overflow-x-auto">
                             <table class="w-full text-left">
                                 <thead class="bg-slate-50 dark:bg-slate-700/50 border-b border-slate-200 dark:border-slate-700">
                                     <tr>
-                                        ${th('name', 'Item Details')}
-                                        ${th('stock', 'Stock')}
-                                        ${th('status', 'Status')}
-                                        <th class="px-6 py-4 font-semibold text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wider">Location</th>
-                                        <th class="px-6 py-4 text-right font-semibold text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wider">Action</th>
+                                        ${th('name', 'Product Info')}
+                                        ${th('stock', 'Stock Level')}
+                                        ${th('loc', 'Location')}
+                                        <th class="px-6 py-4 text-right">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody id="inv-body" class="divide-y divide-slate-100 dark:divide-slate-700"></tbody>
@@ -429,289 +449,351 @@
                         </div>
                     </div>
                 </div>`;
-            renderInvTable(); // เรียกฟังก์ชันวาดตาราง
-        }
-
-        // Helper สร้างหัวตารางแบบกดเรียงได้ (Sortable Header)
-        function th(key, label) {
-            let icon = '';
-            // ถ้ากำลังเรียงตามคอลัมน์นี้ ให้แสดงลูกศร
-            if (sortConfig.key === key) {
-                icon = sortConfig.direction === 'asc' ? '<i class="fa-solid fa-arrow-up sort-icon"></i>' : '<i class="fa-solid fa-arrow-down sort-icon"></i>';
-            }
-            return `<th onclick="handleSort('${key}')" class="px-6 py-4 font-semibold text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wider sort-header select-none">${label} ${icon}</th>`;
-        }
-
-        // เมื่อเปลี่ยนค่า Filter
-        function handleFilterChange(val) {
-            filterStatus = val;
-            renderInvTable(); // วาดตารางใหม่
-        }
-
-        // เมื่อกดหัวตารางเพื่อเรียงลำดับ
-        function handleSort(key) {
-            // ถ้ากดซ้ำคอลัมน์เดิม ให้สลับทิศทาง (asc <-> desc)
-            if (sortConfig.key === key) {
-                sortConfig.direction = sortConfig.direction === 'asc' ? 'desc' : 'asc';
-            } else {
-                // ถ้ากดคอลัมน์ใหม่ ให้เริ่มที่ asc
-                sortConfig.key = key;
-                sortConfig.direction = 'asc';
-            }
             renderInvTable();
         }
 
-        // ฟังก์ชันหลักในการวาดตาราง (Render Logic)
+        // --- HISTORY ---
+        function renderHistory(el) {
+            const today = new Date().toISOString().slice(0, 7);
+            el.innerHTML = `
+                <div class="space-y-6 fade-in">
+                    <div class="flex flex-col sm:flex-row justify-between items-center gap-4 bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                        <div class="flex gap-4 w-full sm:w-auto">
+                            <input type="month" id="hist-month" value="${today}" onchange="renderHistoryTable()" class="px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-white">
+                            <select id="hist-type" onchange="renderHistoryTable()" class="px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-white">
+                                <option value="all">All Types</option>
+                                <option value="IN">Stock IN</option>
+                                <option value="OUT">Stock OUT</option>
+                                <option value="NEW">New Item</option>
+                                <option value="DELETE">Delete</option>
+                            </select>
+                        </div>
+                        <div class="flex gap-6 text-right">
+                            <div><p class="text-xs text-slate-400 uppercase font-bold">Total In</p><p class="text-xl font-bold text-green-500" id="sum-in">0</p></div>
+                            <div class="border-l pl-6 border-slate-200"><p class="text-xs text-slate-400 uppercase font-bold">Total Out</p><p class="text-xl font-bold text-red-500" id="sum-out">0</p></div>
+                        </div>
+                    </div>
+                    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+                        <div class="overflow-x-auto"><table class="w-full text-left"><thead class="bg-slate-50 dark:bg-slate-700/50"><tr><th class="px-6 py-4">Time</th><th class="px-6 py-4">Type</th><th class="px-6 py-4">Item Detail</th><th class="px-6 py-4 text-right">Qty</th><th class="px-6 py-4 text-right">User</th></tr></thead><tbody id="hist-body" class="divide-y divide-slate-100 dark:divide-slate-700"></tbody></table></div>
+                    </div>
+                </div>`;
+            renderHistoryTable();
+        }
+
+        // --- PRODUCTION ---
+        function renderProduction(el) {
+             const m = (n,s,e,c) => `<div class="bg-white dark:bg-slate-800 border dark:border-slate-700 rounded-xl p-6 flex items-center gap-6 shadow-sm"><div class="w-16 h-16 rounded-full bg-${c}-100 flex items-center justify-center text-2xl text-${c}-600 ${s==='Running'?'animate-pulse':''}"><i class="fa-solid fa-gears"></i></div><div class="flex-1"> <div class="flex justify-between mb-2"><h3 class="font-bold text-lg dark:text-white">${n}</h3><span class="px-3 py-1 rounded-full text-xs font-bold uppercase bg-${c}-100 text-${c}-700">${s}</span></div><div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden"><div class="bg-${c}-500 h-2.5 rounded-full" style="width: ${e}%"></div></div><div class="flex justify-between mt-2 text-xs text-slate-500"><span>OEE: ${e}%</span></div></div></div>`;
+             el.innerHTML = `<div class="space-y-6 fade-in"><h2 class="text-2xl font-bold dark:text-white mb-6">Production Monitor</h2><div class="grid gap-4">${m('CNC 01','Running',92,'green')}${m('Assembly Line','Running',88,'green')}${m('Packaging','Stopped',0,'red')}</div></div>`;
+        }
+
+        // ==========================================
+        // 5. DATA LOGIC & TABLES
+        // ==========================================
         function renderInvTable() {
             const term = document.getElementById('search')?.value.toLowerCase() || '';
             const tbody = document.getElementById('inv-body');
-
-            // 1. ขั้นตอนการกรอง (Filter)
+            
             let filtered = inventory.filter(i => {
-                const textMatch = i.name.toLowerCase().includes(term) || i.sku.toLowerCase().includes(term);
-                let statusMatch = true;
-                if(filterStatus === 'low') statusMatch = i.stock < i.min && i.stock > 0;
-                else if(filterStatus === 'out') statusMatch = i.stock === 0;
-                else if(filterStatus === 'normal') statusMatch = i.stock >= i.min;
-                return textMatch && statusMatch;
+                const text = i.name.toLowerCase().includes(term) || i.sku.toLowerCase().includes(term);
+                if(filterStatus === 'low') return text && i.stock < i.min && i.stock > 0;
+                if(filterStatus === 'out') return text && i.stock === 0;
+                if(filterStatus === 'normal') return text && i.stock >= i.min;
+                return text;
             });
 
-            // 2. ขั้นตอนการเรียงลำดับ (Sort)
-            filtered.sort((a, b) => {
-                let valA, valB;
-                // กรณีเรียงตาม Status ต้องแปลงเป็นตัวเลขเพื่อเปรียบเทียบ
-                if(sortConfig.key === 'status') {
-                    const getStatusVal = (item) => item.stock === 0 ? 0 : (item.stock < item.min ? 1 : 2);
-                    valA = getStatusVal(a);
-                    valB = getStatusVal(b);
-                } else {
-                    valA = a[sortConfig.key];
-                    valB = b[sortConfig.key];
-                }
-
-                // ตรวจสอบประเภทข้อมูลว่าเป็น String หรือ Number
-                if (typeof valA === 'string') {
-                    return sortConfig.direction === 'asc' ? valA.localeCompare(valB) : valB.localeCompare(valA);
-                }
-                return sortConfig.direction === 'asc' ? valA - valB : valB - valA;
+            // Sort
+            filtered.sort((a,b) => {
+                let va = a[sortConfig.key], vb = b[sortConfig.key];
+                if(typeof va === 'string') return sortConfig.direction==='asc' ? va.localeCompare(vb) : vb.localeCompare(va);
+                return sortConfig.direction==='asc' ? va-vb : vb-va;
             });
 
-            // 3. ขั้นตอนการวาด HTML
-            if(filtered.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="px-6 py-12 text-center text-slate-400"><i class="fa-solid fa-box-open text-4xl mb-3 opacity-20 block"></i>No items match criteria.</td></tr>`;
-                return;
-            }
+            if(!filtered.length) { tbody.innerHTML = `<tr><td colspan="4" class="p-8 text-center text-slate-400">No items found.</td></tr>`; return; }
 
-            // Loop ข้อมูลมาสร้าง HTML ทีละแถว
             tbody.innerHTML = filtered.map(i => `
-                <tr class="hover:bg-blue-50/50 dark:hover:bg-slate-700/30 transition group">
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition group">
                     <td class="px-6 py-4">
-                        <div class="font-bold text-slate-800 dark:text-white">${i.name}</div>
-                        <div class="text-xs text-slate-400 font-mono">${i.sku}</div>
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-lg bg-slate-100 dark:bg-slate-700 flex-shrink-0 overflow-hidden border border-slate-200 dark:border-slate-600">
+                                ${i.img ? `<img src="${i.img}" class="w-full h-full object-cover">` : `<div class="w-full h-full flex items-center justify-center text-slate-400"><i class="fa-solid fa-box"></i></div>`}
+                            </div>
+                            <div>
+                                <div class="font-bold text-slate-800 dark:text-white">${i.name}</div>
+                                <div class="text-xs text-slate-400 font-mono">${i.sku}</div>
+                            </div>
+                        </div>
                     </td>
                     <td class="px-6 py-4">
-                        <div class="font-mono text-slate-700 dark:text-slate-300 font-medium">${i.stock} <span class="text-xs text-slate-400 font-sans">${i.unit}</span></div>
+                         <div class="font-mono text-lg font-bold ${i.stock===0?'text-red-500':(i.stock<i.min?'text-orange-500':'text-slate-700 dark:text-slate-200')}">${i.stock} <span class="text-xs font-sans text-slate-400 font-normal">${i.unit}</span></div>
+                         <div class="text-[10px] text-slate-400">Min: ${i.min} | Cost: ${i.cost || 0}฿</div>
                     </td>
-                    <td class="px-6 py-4">
-                        <span class="px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wide border ${i.stock === 0 ? 'bg-red-100 text-red-700 border-red-200' : (i.stock < i.min ? 'bg-orange-100 text-orange-700 border-orange-200' : 'bg-green-100 text-green-700 border-green-200')}">
-                            ${i.stock === 0 ? 'Out of Stock' : (i.stock < i.min ? 'Low Stock' : 'In Stock')}
-                        </span>
-                    </td>
-                    <td class="px-6 py-4 text-sm text-slate-500 dark:text-slate-400">${i.loc}</td>
+                    <td class="px-6 py-4 text-sm text-slate-500">${i.loc}</td>
                     <td class="px-6 py-4 text-right">
                         <div class="flex justify-end gap-2 opacity-100 lg:opacity-0 group-hover:opacity-100 transition-opacity">
-                            <button onclick="updateStock(${i.id}, 1)" class="w-8 h-8 rounded-lg bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 hover:scale-110 transition flex items-center justify-center"><i class="fa-solid fa-plus text-xs"></i></button>
-                            <button onclick="updateStock(${i.id}, -1)" class="w-8 h-8 rounded-lg bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 hover:scale-110 transition flex items-center justify-center"><i class="fa-solid fa-minus text-xs"></i></button>
-                            <div class="w-px h-6 bg-slate-200 dark:bg-slate-700 mx-1"></div>
-                            <button onclick="openModal(${i.id})" class="w-8 h-8 rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 hover:scale-110 transition flex items-center justify-center"><i class="fa-solid fa-pen text-xs"></i></button>
-                            <button onclick="delItem(${i.id})" class="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-700 text-slate-500 hover:text-red-500 hover:scale-110 transition flex items-center justify-center"><i class="fa-solid fa-trash text-xs"></i></button>
+                            <button onclick="updateStock(${i.id}, 1)" class="btn-icon bg-green-100 text-green-600 hover:scale-110"><i class="fa-solid fa-plus"></i></button>
+                            <button onclick="updateStock(${i.id}, -1)" class="btn-icon bg-red-100 text-red-600 hover:scale-110"><i class="fa-solid fa-minus"></i></button>
+                            <span class="w-px h-8 bg-slate-200 mx-1"></span>
+                            <button onclick="printLabel(${i.id})" class="btn-icon bg-slate-800 text-white hover:scale-110"><i class="fa-solid fa-print"></i></button>
+                            <button onclick="openModal(${i.id})" class="btn-icon bg-blue-100 text-blue-600 hover:scale-110"><i class="fa-solid fa-pen"></i></button>
+                            <button onclick="delItem(${i.id})" class="btn-icon bg-slate-100 text-slate-500 hover:text-red-500"><i class="fa-solid fa-trash"></i></button>
                         </div>
                     </td>
                 </tr>
             `).join('');
         }
 
-        // ==========================================
-        // SECTION 6: จัดการ Modal & CRUD (Create, Read, Update, Delete)
-        // ==========================================
-        
-        // เปิด Modal (ใช้ได้ทั้งโหมดเพิ่มและแก้ไข)
-        function openModal(id = null) {
-            const modal = document.getElementById('modal-form');
-            const title = document.getElementById('modal-title');
+        function renderHistoryTable() {
+            const mVal = document.getElementById('hist-month').value;
+            const tVal = document.getElementById('hist-type').value;
+            const tbody = document.getElementById('hist-body');
             
-            if(id) {
-                // === โหมดแก้ไข (Edit) ===
-                const item = inventory.find(i => i.id === id); // หาข้อมูลเดิม
-                if(!item) return;
-                title.innerText = 'Edit Item';
-                // นำข้อมูลเดิมไปใส่ใน Input
-                document.getElementById('inp-id').value = item.id;
-                document.getElementById('inp-name').value = item.name;
-                document.getElementById('inp-sku').value = item.sku;
-                document.getElementById('inp-loc').value = item.loc;
-                document.getElementById('inp-stock').value = item.stock;
-                document.getElementById('inp-min').value = item.min;
-                document.getElementById('inp-unit').value = item.unit;
-            } else {
-                // === โหมดเพิ่มใหม่ (Add) ===
-                title.innerText = 'Add New Item';
-                document.querySelector('form').reset(); // ล้างฟอร์ม
-                document.getElementById('inp-id').value = ''; // เคลียร์ ID
+            let filtered = transactionHistory.filter(t => t.date.startsWith(mVal) && (tVal==='all' || t.type===tVal));
+            
+            let tin=0, tout=0;
+            filtered.forEach(t => { if(t.qty>0) tin+=t.qty; else tout+=Math.abs(t.qty); });
+            document.getElementById('sum-in').innerText = tin;
+            document.getElementById('sum-out').innerText = tout;
+
+            if(!filtered.length) { tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-slate-400">No records found.</td></tr>`; return; }
+
+            tbody.innerHTML = filtered.map(t => {
+                const badge = t.type==='IN'?'bg-green-100 text-green-700':(t.type==='OUT'?'bg-orange-100 text-orange-700':(t.type==='NEW'?'bg-blue-100 text-blue-700':'bg-red-100 text-red-700'));
+                return `
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30">
+                    <td class="px-6 py-4"><div class="text-sm font-bold text-slate-700 dark:text-slate-200">${new Date(t.date).toLocaleDateString()}</div><div class="text-xs text-slate-400">${new Date(t.date).toLocaleTimeString()}</div></td>
+                    <td class="px-6 py-4"><span class="px-2 py-1 rounded text-xs font-bold ${badge}">${t.type}</span></td>
+                    <td class="px-6 py-4"><div class="font-medium text-slate-800 dark:text-white">${t.name}</div><div class="text-xs text-slate-400">${t.sku}</div></td>
+                    <td class="px-6 py-4 text-right font-bold font-mono ${t.qty>0?'text-green-600':'text-red-500'}">${t.qty>0?'+':''}${t.qty}</td>
+                    <td class="px-6 py-4 text-right text-sm text-slate-500">${t.user}</td>
+                </tr>`;
+            }).join('');
+        }
+
+        // ==========================================
+        // 6. ACTIONS (CRUD & LOGIC)
+        // ==========================================
+        function updateStock(id, amt) {
+            const item = inventory.find(i => i.id === id);
+            if(!item || (amt < 0 && item.stock <= 0)) return;
+            item.stock = Math.max(0, item.stock + amt);
+            recordTransaction(amt > 0 ? 'IN' : 'OUT', item, amt);
+            save();
+            renderInvTable();
+            showToast('Stock Updated');
+        }
+
+        function delItem(id) {
+            if(confirm('Delete item?')) {
+                const item = inventory.find(i=>i.id===id);
+                if(item) recordTransaction('DELETE', item, 0);
+                inventory = inventory.filter(i => i.id !== id);
+                save(); renderInvTable(); showToast('Item Deleted');
             }
-            
-            modal.classList.remove('hidden');
         }
 
-        function closeModal() {
-            document.getElementById('modal-form').classList.add('hidden');
-        }
-
-        // ฟังก์ชันบันทึกข้อมูล (รวม Add และ Edit ไว้ในที่เดียว)
         function handleFormSubmit() {
             const idVal = document.getElementById('inp-id').value;
-            // สร้าง Object ข้อมูลใหม่จาก Input
+            const skuVal = document.getElementById('inp-sku').value.trim();
+
+            if(inventory.some(i => i.sku.toLowerCase() === skuVal.toLowerCase() && i.id.toString() !== idVal)) {
+                alert('❌ SKU already exists!'); return;
+            }
+
             const newItem = {
-                id: idVal ? parseInt(idVal) : Date.now(), // ถ้ามี ID เดิมให้ใช้เดิม ถ้าไม่มีให้สร้างใหม่จากเวลา
+                id: idVal ? parseInt(idVal) : Date.now(),
                 name: document.getElementById('inp-name').value,
-                sku: document.getElementById('inp-sku').value,
+                sku: skuVal,
                 stock: parseInt(document.getElementById('inp-stock').value),
                 min: parseInt(document.getElementById('inp-min').value),
                 unit: document.getElementById('inp-unit').value,
-                loc: document.getElementById('inp-loc').value
+                loc: document.getElementById('inp-loc').value,
+                cost: parseFloat(document.getElementById('inp-cost').value) || 0,
+                img: document.getElementById('inp-img').value
             };
 
             if(idVal) {
-                // Update ข้อมูลเดิม
-                const index = inventory.findIndex(i => i.id === newItem.id);
-                if(index !== -1) {
-                    inventory[index] = newItem;
-                    addLog('Item Updated', `Edited ${newItem.name}`);
-                    showToast('Item updated successfully');
-                }
+                const idx = inventory.findIndex(i => i.id === newItem.id);
+                const diff = newItem.stock - inventory[idx].stock;
+                if(diff !== 0) recordTransaction(diff > 0 ? 'IN' : 'OUT', newItem, diff);
+                inventory[idx] = newItem;
             } else {
-                // Add ข้อมูลใหม่เข้า Array
                 inventory.push(newItem);
-                addLog('New Item', `Added ${newItem.name}`);
-                showToast('New item added');
+                recordTransaction('NEW', newItem, newItem.stock);
             }
-
-            save(); // บันทึกลงเครื่อง
-            closeModal();
-            if(currRoute === 'inventory') renderInvTable(); // วาดตารางใหม่
-        }
-
-        // ลบสินค้า
-        function delItem(id) {
-            if(confirm('Delete this item?')) {
-                const name = inventory.find(i => i.id === id)?.name;
-                inventory = inventory.filter(i => i.id !== id); // กรองเอา ID ที่จะลบออกไป
-                save();
-                addLog('Item Deleted', `Removed ${name}`);
-                renderInvTable();
-                showToast('Item deleted');
-            }
-        }
-
-        // เพิ่ม/ลดสต็อกด่วน
-        function updateStock(id, amt) {
-            const item = inventory.find(i => i.id === id);
-            if(item) {
-                item.stock = Math.max(0, item.stock + amt); // ห้ามติดลบ
-                save();
-                addLog('Stock Update', `${item.name}: ${amt>0?'+':''}${amt} (${item.stock})`);
-                if(currRoute==='inventory') renderInvTable();
-                showToast(`Stock updated: ${item.stock}`);
-            }
+            save(); closeModal(); renderInvTable(); showToast('Saved Successfully');
         }
 
         // ==========================================
-        // SECTION 7: ฟีเจอร์เสริม (Export, Save, Log, Toast, Chart)
+        // 7. UTILS & EXTRAS
         // ==========================================
-        
-        // ส่งออกเป็นไฟล์ CSV (Excel)
-        function exportCSV() {
-            // สร้าง Header และ Loop ข้อมูลเป็น String
-            let csv = "ID,Name,SKU,Stock,Unit,Location\n" + inventory.map(i => `${i.id},"${i.name}",${i.sku},${i.stock},${i.unit},"${i.loc}"`).join('\n');
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(new Blob([csv], {type: 'text/csv'}));
-            a.download = 'inventory_export.csv';
-            a.click();
-            showToast('CSV Exported');
-        }
-
-        // บันทึกลง LocalStorage
-        function save() {
-            localStorage.setItem('factory_inv_v2', JSON.stringify(inventory));
-            localStorage.setItem('factory_logs_v2', JSON.stringify(activityLogs));
-        }
-
-        // เพิ่มประวัติการทำงาน (จำกัด 20 รายการ)
-        function addLog(action, desc) {
-            activityLogs.unshift({ action, desc, time: new Date().toLocaleTimeString('en-US', {hour:'2-digit', minute:'2-digit'}) });
+        function recordTransaction(type, item, qty) {
+            transactionHistory.unshift({ id: Date.now(), date: new Date().toISOString(), type, name: item.name, sku: item.sku, qty, user: currentUser, balance: item.stock });
+            if(transactionHistory.length > 1000) transactionHistory.pop();
+            activityLogs.unshift({ action: type, desc: `${item.name} (${qty}) by ${currentUser}`, time: new Date().toLocaleTimeString() });
             if(activityLogs.length > 20) activityLogs.pop();
-            save();
+        }
+        
+        function save() {
+            localStorage.setItem('factory_inv_v3', JSON.stringify(inventory));
+            localStorage.setItem('factory_logs_v3', JSON.stringify(activityLogs));
+            localStorage.setItem('factory_trans_v3', JSON.stringify(transactionHistory));
         }
 
-        function clearLogs() {
-            activityLogs = [];
-            save();
-            if(currRoute === 'dashboard') renderDashboard(document.getElementById('content-area'));
+        function handleBarcodeScan(code) {
+            router('inventory');
+            document.getElementById('search').value = code;
+            renderInvTable();
+            const found = inventory.find(i => i.sku.toLowerCase() === code.toLowerCase());
+            if(found) { showToast(`Scanned: ${found.name}`); } 
+            else { showToast('Item not found', 'error'); }
         }
 
-        // แสดงป้ายแจ้งเตือนมุมขวาบน
+        function openModal(id = null) {
+            document.getElementById('modal-form').classList.remove('hidden');
+            if(id) {
+                const i = inventory.find(x => x.id === id);
+                document.getElementById('modal-title').innerText = 'Edit Item';
+                document.getElementById('inp-id').value = i.id;
+                document.getElementById('inp-name').value = i.name;
+                document.getElementById('inp-sku').value = i.sku;
+                document.getElementById('inp-loc').value = i.loc;
+                document.getElementById('inp-stock').value = i.stock;
+                document.getElementById('inp-min').value = i.min;
+                document.getElementById('inp-unit').value = i.unit;
+                document.getElementById('inp-cost').value = i.cost;
+                document.getElementById('inp-img').value = i.img || '';
+            } else {
+                document.getElementById('modal-title').innerText = 'Add New Item';
+                document.querySelector('form').reset();
+                document.getElementById('inp-id').value = '';
+            }
+            document.getElementById('inp-img').dispatchEvent(new Event('input'));
+        }
+        function closeModal() { document.getElementById('modal-form').classList.add('hidden'); }
+
+        function openReorderModal() {
+            const list = inventory.filter(i => i.stock < i.min);
+            const div = document.getElementById('reorder-content');
+            if(!list.length) { div.innerHTML = '<p class="text-center text-slate-400 mt-10">All items are sufficiently stocked!</p>'; }
+            else {
+                let total = 0;
+                div.innerHTML = `<table class="w-full text-sm text-left"><thead class="bg-slate-100"><tr><th class="p-3">Item</th><th class="p-3">Current</th><th class="p-3">Order</th><th class="p-3 text-right">Est. Cost</th></tr></thead><tbody>` + 
+                list.map(i => {
+                    const buy = (i.min - i.stock) + Math.ceil(i.min*0.2);
+                    const cost = buy * (i.cost||0);
+                    total += cost;
+                    return `<tr><td class="p-3"><b>${i.name}</b><div class="text-xs">${i.sku}</div></td><td class="p-3 text-red-600 font-bold">${i.stock}</td><td class="p-3 text-blue-600 font-bold">+${buy}</td><td class="p-3 text-right">${cost.toLocaleString()}฿</td></tr>`;
+                }).join('') + `</tbody><tfoot><tr><td colspan="3" class="p-3 text-right font-bold">Total:</td><td class="p-3 text-right font-bold text-green-600 text-lg">${total.toLocaleString()}฿</td></tr></tfoot></table>`;
+            }
+            document.getElementById('modal-reorder').classList.remove('hidden');
+        }
+
+        function printLabel(id) {
+            const item = inventory.find(i=>i.id===id);
+            const area = document.getElementById('print-area');
+            area.innerHTML = `<div class="label-card"><div style="flex:1;display:flex;flex-direction:column;justify-content:space-between;"><div><span style="font-size:12px;font-weight:bold">FACTORY ONE</span><h1 style="font-size:22px;font-weight:900;line-height:1.1;margin:5px 0">${item.name}</h1><p style="font-family:monospace;font-size:14px">${item.sku}</p></div><div style="font-size:12px">LOC: <b>${item.loc}</b> | MIN: <b>${item.min}</b></div></div><div style="width:100px;display:flex;flex-direction:column;align-items:center;justify-content:center;"><img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${item.sku}" style="width:100%"><span style="font-size:9px;margin-top:5px">SCAN ME</span></div></div>`;
+            area.classList.remove('hidden'); window.print(); area.classList.add('hidden');
+        }
+
+        function printReorder() {
+            const content = document.getElementById('reorder-content').innerHTML;
+            const area = document.getElementById('print-area');
+            area.innerHTML = `<div style="padding:40px;font-family:sans-serif"><h1>Purchase Order</h1><p>Date: ${new Date().toLocaleDateString()}</p>${content}</div>`;
+            area.classList.remove('hidden'); window.print(); area.classList.add('hidden');
+        }
+
+        function backupSystem() {
+            const data = { inv: inventory, logs: activityLogs, hist: transactionHistory, ver: '3.0' };
+            const a = document.createElement('a');
+            a.href = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data));
+            a.download = `FactoryOne_Backup_${new Date().toISOString().slice(0,10)}.json`;
+            document.body.appendChild(a); a.click(); a.remove();
+        }
+
+        function restoreSystem(input) {
+            const f = input.files[0];
+            if(!f) return;
+            const r = new FileReader();
+            r.onload = e => {
+                try {
+                    const d = JSON.parse(e.target.result);
+                    if(d.inv && confirm('Replace current data with backup?')) {
+                        localStorage.setItem('factory_inv_v3', JSON.stringify(d.inv));
+                        localStorage.setItem('factory_logs_v3', JSON.stringify(d.logs||[]));
+                        localStorage.setItem('factory_trans_v3', JSON.stringify(d.hist||[]));
+                        location.reload();
+                    }
+                } catch(err) { alert('Invalid File'); }
+            };
+            r.readAsText(f);
+        }
+
+        function importCSV(input) {
+            const f = input.files[0];
+            if(!f) return;
+            const r = new FileReader();
+            r.onload = e => {
+                const lines = e.target.result.split('\n');
+                let count = 0;
+                for(let i=1; i<lines.length; i++) {
+                    const c = lines[i].trim().split(',');
+                    if(c.length>=2 && !inventory.some(x=>x.sku===c[1])) {
+                        inventory.push({ id: Date.now()+i, name:c[0], sku:c[1], stock:parseInt(c[2])||0, unit:c[3]||'pcs', loc:c[4]||'Gen', min:parseInt(c[5])||10, cost:parseFloat(c[6])||0, img:'' });
+                        count++;
+                    }
+                }
+                save(); renderInvTable(); showToast(`Imported ${count} items`); input.value='';
+            };
+            r.readAsText(f);
+        }
+
+        function exportCSV() {
+            const csv = "Name,SKU,Stock,Unit,Loc,Min,Cost\n" + inventory.map(i=>`${i.name},${i.sku},${i.stock},${i.unit},${i.loc},${i.min},${i.cost}`).join('\n');
+            const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], {type:'text/csv'})); a.download = 'inventory_export.csv'; a.click();
+        }
+
+        function factoryReset() {
+            if(confirm('WARNING: Wipe ALL data?')) { localStorage.clear(); location.reload(); }
+        }
+
         function showToast(msg, type='success') {
             const t = document.getElementById('toast');
             document.getElementById('toast-msg').innerText = msg;
-            t.style.transform = 'translateX(0)'; // เลื่อนออกมาแสดง
-            setTimeout(() => t.style.transform = 'translateX(150%)', 2500); // หดกลับหลัง 2.5 วิ
+            t.style.transform = 'translateX(0)'; setTimeout(()=>t.style.transform='translateX(150%)', 2500);
         }
 
-        // ตั้งค่าและวาดกราฟ (ใช้ Chart.js)
-        function initCharts(lowCount) {
-            const ctx = document.getElementById('chartProd').getContext('2d');
-            // สร้างสีไล่ระดับ (Gradient)
-            const gradient = ctx.createLinearGradient(0, 0, 0, 300);
-            gradient.addColorStop(0, 'rgba(59, 130, 246, 0.5)');
-            gradient.addColorStop(1, 'rgba(59, 130, 246, 0.0)');
-
-            // กราฟเส้น
-            new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: ['8:00', '10:00', '12:00', '14:00', '16:00', '18:00'],
-                    datasets: [{
-                        label: 'Output', data: [120, 350, 480, 600, 850, 920],
-                        borderColor: '#3b82f6', backgroundColor: gradient, fill: true, tension: 0.4,
-                        pointBackgroundColor: '#fff', pointBorderColor: '#3b82f6', pointBorderWidth: 2
-                    }]
-                },
-                options: { maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false } }, y: { grid: { color: isDarkMode ? '#334155' : '#e2e8f0' } } } }
-            });
-
-            // กราฟวงกลม (Doughnut)
-            new Chart(document.getElementById('chartInv'), {
-                type: 'doughnut',
-                data: {
-                    labels: ['In Stock', 'Low Stock', 'Empty'],
-                    datasets: [{ data: [inventory.filter(i=>i.stock>=i.min).length, lowCount, inventory.filter(i=>i.stock===0).length], backgroundColor: ['#10b981', '#f59e0b', '#ef4444'], borderWidth: 0 }]
-                },
-                options: { plugins: { legend: { position: 'right' } } }
-            });
+        function statCard(l,v,u,i,c) {
+            return `<div class="bg-gradient-to-br from-${c}-500 to-${c}-600 text-white p-6 rounded-2xl shadow-lg relative overflow-hidden group hover:-translate-y-1 transition-transform"><div class="relative z-10"><p class="opacity-80 font-medium text-sm">${l}</p><h3 class="text-3xl font-bold mt-1">${v} <span class="text-sm font-normal opacity-70">${u}</span></h3></div><i class="fa-solid ${i} absolute -bottom-4 -right-4 text-8xl opacity-10 group-hover:scale-110 group-hover:rotate-12 transition-transform"></i></div>`;
         }
 
-        // Render หน้า Production (แสดงเครื่องจักรจำลอง)
-        function renderProduction(el) {
-            // Helper สร้างการ์ดเครื่องจักร (Arrow Function แบบย่อ)
-            const m = (n,s,e,t,c) => `<div class="bg-white dark:bg-slate-800 border dark:border-slate-700 rounded-xl p-6 flex flex-col md:flex-row items-center gap-6 shadow-sm"><div class="w-16 h-16 rounded-full bg-${c}-100 dark:bg-${c}-900/30 flex items-center justify-center text-2xl text-${c}-600 dark:text-${c}-400 ${s==='Running'?'animate-pulse':''}"><i class="fa-solid fa-gears"></i></div><div class="flex-1 w-full"><div class="flex justify-between mb-2"><h3 class="font-bold text-lg dark:text-white">${n}</h3><span class="px-3 py-1 rounded-full text-xs font-bold uppercase bg-${c}-100 dark:bg-${c}-900/30 text-${c}-700 dark:text-${c}-400">${s}</span></div><div class="w-full bg-slate-100 dark:bg-slate-700 rounded-full h-2.5 overflow-hidden"><div class="bg-${c}-500 h-2.5 rounded-full" style="width: ${e}%"></div></div><div class="flex justify-between mt-2 text-xs text-slate-500"><span>EFF: ${e}%</span> <span>TEMP: ${t}°C</span></div></div></div>`;
-            el.innerHTML = `<div class="space-y-6 fade-in"><h2 class="text-2xl font-bold dark:text-white mb-6">Production Monitor</h2><div class="grid gap-4">${m('CNC Machine A','Running',92,65,'green')}${m('Robot Arm B','Running',88,50,'green')}${m('Conveyor Belt','Stopped',0,25,'red')}</div></div>`;
+        function th(k,l) {
+            return `<th onclick="sortConfig.key='${k}';sortConfig.direction=sortConfig.direction==='asc'?'desc':'asc';renderInvTable()" class="px-6 py-4 font-semibold text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wider sort-header select-none">${l} <i class="fa-solid fa-sort ml-1 opacity-50"></i></th>`;
         }
 
-        // Render หน้า Scanner (หน้าจำลอง)
-        function renderBarcode(el) {
-            el.innerHTML = `<div class="max-w-4xl mx-auto space-y-8 fade-in text-center"><h2 class="text-3xl font-bold dark:text-white">Scanner Terminal</h2><p class="text-slate-500">Simulation Mode</p><div class="bg-slate-900 p-8 rounded-3xl text-white">📷 Camera Feed Simulated</div></div>`;
+        function initCharts() {
+            const ctx = document.getElementById('chartInv').getContext('2d');
+            if(window.myChart) window.myChart.destroy();
+            window.myChart = new Chart(ctx, { type: 'doughnut', data: { labels: ['Ok', 'Low', 'Empty'], datasets: [{ data: [inventory.filter(i=>i.stock>=i.min).length, inventory.filter(i=>i.stock<i.min&&i.stock>0).length, inventory.filter(i=>i.stock===0).length], backgroundColor: ['#10b981','#f59e0b','#ef4444'], borderWidth:0 }] }, options: { maintainAspectRatio:false, plugins:{legend:{position:'right'}} } });
         }
 
+        // CSS Helper for button styles
+        const style = document.createElement('style');
+        style.innerHTML = `.btn-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; transition: all 0.2s; font-size: 12px; }`;
+        document.head.appendChild(style);
+
+        function toggleDarkMode() {
+            isDarkMode = !isDarkMode;
+            document.documentElement.classList.toggle('dark');
+            localStorage.setItem('darkMode', isDarkMode);
+            initCharts();
+        }
+
+        function toggleSidebar() {
+            const s = document.getElementById('sidebar');
+            const o = document.getElementById('sidebar-overlay');
+            if(s.classList.contains('-translate-x-full')) { s.classList.remove('-translate-x-full'); s.classList.add('translate-x-0'); o.classList.remove('hidden'); }
+            else { s.classList.add('-translate-x-full'); s.classList.remove('translate-x-0'); o.classList.add('hidden'); }
+        }
     </script>
 </body>
 </html>
